@@ -2,7 +2,7 @@
   "name": "tailwind-emmet",
   "displayName": "tailwind-emmet",
   "description": "convert emmet to tailwind className",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "engines": {
     "vscode": "^1.99.0"
   },
@@ -19,10 +19,28 @@
     "Linters",
     "Other"
   ],
+  "publisher": "devjser",
   "main": "./dist/extension.js",
- 
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onLanguage:javascript",
+    "onLanguage:javascriptreact",
+    "onLanguage:typescript",
+    "onLanguage:typescriptreact",
+    "onLanguage:vue",
+    "onLanguage:nvue",
+    "onLanguage:svelte",
+    "onLanguage:html",
+    "onLanguage:xhtml",
+    "onLanguage:ejs",
+    "onLanguage:jsx",
+    "onLanguage:tsx",
+    "onLanguage:jsp",
+    "onLanguage:php",
+    "onLanguage:pug",
+    "onLanguage:hbs",
+    "onLanguage:ftl",
+    "onLanguage:tpl"
   ],
   "contributes": {
     "commands": [
