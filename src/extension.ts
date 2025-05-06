@@ -1,93 +1,104 @@
 import * as vscode from "vscode";
+
+
 let outputChannel: vscode.OutputChannel;
+
 function getTailwindClass(type: string, value: string): string {
   switch (type) {
     case "w":
-      return `w-[${value}px]`; // 生成 w-[20px]
+      return `w-[${value}px]`;
     case "h":
-      return `h-[${value}px]`; // 生成 h-[20px]
+      return `h-[${value}px]`;
     case "maw":
-      return `max-w-[${value}px]`; // 生成 max-w-[20px]
+      return `max-w-[${value}px]`;
     case "miw":
-      return `min-w-[${value}px]`; // 生成 min-w-[20px]
+      return `min-w-[${value}px]`;
     case "mah":
-      return `max-h-[${value}px]`; // 生成 max-h-[20px]
+      return `max-h-[${value}px]`;
     case "mih":
-      return `min-h-[${value}px]`; // 生成 min-h-[20px]
+      return `min-h-[${value}px]`;
 
     case "t":
-      return `top-[${value}px]`; // 生成 top-[20px]
+      return `top-[${value}px]`;
     case "r":
-      return `right-[${value}px]`; // 生成 right-[20px]
+      return `right-[${value}px]`;
     case "b":
-      return `bottom-[${value}px]`; // 生成 bottom-[20px]
+      return `bottom-[${value}px]`;
     case "l":
-      return `left-[${value}px]`; // 生成 left-[20px]
+      return `left-[${value}px]`;
 
     case "m":
-      return `m-[${value}px]`; // 生成 m-[20px]
-    case "mt":
-      return `mt-[${value}px]`; // 生成 mt-[20px]
-    case "mr":
-      return `mr-[${value}px]`; // 生成 mr-[20px]
-    case "mb":
-      return `mb-[${value}px]`; // 生成 mb-[20px]
-    case "ml":
-      return `ml-[${value}px]`; // 生成 ml-[20px]
-    case "mx":
-      return `mx-[${value}px]`; // 生成 mx-[20px]
-    case "my":
-      return `my-[${value}px]`; // 生成 my-[20px]
+      return `m-[${value}px]`;    
+    case "mt": 
+      return `mt-[${value}px]`;   
+    case "mr": 
+      return `mr-[${value}px]`;   
+    case "mb": 
+      return `mb-[${value}px]`;   
+    case "ml": 
+      return `ml-[${value}px]`;   
+    case "mx": 
+      return `mx-[${value}px]`;   
+    case "my": 
+      return `my-[${value}px]`;   
 
     case "p":
-      return `p-[${value}px]`; // 生成 p-[20px]
+      return `p-[${value}px]`;  
     case "pt":
-      return `pt-[${value}px]`; // 生成 pt-[20px]
+      return `pt-[${value}px]`; 
     case "pr":
-      return `pr-[${value}px]`; // 生成 pr-[20px]
+      return `pr-[${value}px]`; 
     case "pb":
-      return `pb-[${value}px]`; // 生成 pb-[20px]
+      return `pb-[${value}px]`; 
     case "pl":
-      return `pl-[${value}px]`; // 生成 pl-[20px]
+      return `pl-[${value}px]`; 
     case "px":
-      return `px-[${value}px]`; // 生成 px-[20px]
+      return `px-[${value}px]`; 
     case "py":
-      return `py-[${value}px]`; // 生成 py-[20px]
+      return `py-[${value}px]`;
 
     case "f":
-      return `text-[${value}px]`; // 生成 text-[20px]
+      return `text-[${value}px]`;
     case "lh":
-      return `leading-[${value}px]`; // 生成 leading-[20px]
+      return `leading-[${value}px]`;
     case "fw":
-      return `font-[${value}]`; // 生成 font-[500]
+      return `font-[${value}]`;
     case "z":
-      return `z-[${value}]`; // 生成 z-[20px]
-    case "indent":
-      return `text-indent-[${value}px]`; // 生成 text-indent-[20px]
+      return `z-[${value}]`;
     case "ti":
-      return `line-height-[${value}px]`; // 生成 line-height-[20px]
+    case "indent":
+      return `text-indent-[${value}px]`;
+    
 
     case "g":
-      return `gap-[${value}px]`; // 生成 gap-[20px]
+      return `gap-[${value}px]`;
     case "gx":
-      return `gap-x-[${value}px]`; // 生成 gap-x-[20px]
+      return `gap-x-[${value}px]`;
     case "gy":
-      return `gap-y-[${value}px]`; // 生成 gap-y-[20px]
-
+      return `gap-y-[${value}px]`; 
     case "bdrs":
-      return `rounded-[${value}px]`; // 生成 rounded-[20px]
+      return `rounded-[${value}px]`;
+
+    case "bdc":
+      return `border border-solid border-[${value}]`; 
     case "bd":
-      return `border border-solid border-[${value}px]`; // 生成 border border-solid border-[20px]
+      return `border-solid border-[${value}px]`; 
     case "bdw":
-      return `border border-solid border-[${value}px]`; // 生成 border border-solid border-[20px]
+      return `border-solid border-[${value}px]`; 
     case "bdt":
-      return `border border-solid border-t-[${value}px]`; // 生成 border border-solid border-t-[20px]
+      return `border-solid border-t-[${value}px]`; 
     case "bdr":
-      return `border border-solid border-r-[${value}px]`; // 生成 border border-solid border-r-[20px]
+      return `border-solid border-r-[${value}px]`;
     case "bdb":
-      return `border border-solid border-b-[${value}px]`; // 生成 border border-solid border-b-[20px]
+      return `border-solid border-b-[${value}px]`; 
     case "bdl":
-      return `border border-solid border-l-[${value}px]`; // 生成 border border-solid border-b-[20px]
+      return `border-solid border-l-[${value}px]`;
+    case "c":
+      return `text-[#${value}]`;
+    case "bgc":
+      return `bg-[#${value}]`;
+    case "oc":
+      return `outline-[#${value}]`;
     default:
       return "";
   }
@@ -116,8 +127,7 @@ async function insertCodeOnTab(editor: vscode.TextEditor, classRegex: RegExp) {
     const word = document.getText(wordRange);
 
     if (word) {
-      const match = word.match(/^([a-z]+)(\d+)$/);
-
+      const match = word.match(/^([a-z]+)(\d+|#[a-z0-9]{3,6})$/i);
       if (match) {
         const [, type, value] = match;
         const tailwindClass = getTailwindClass(type, value);
@@ -147,9 +157,12 @@ const insertCodeOnTabDebounced = debounce((editor: vscode.TextEditor, classRegex
 }, 500);
 
 
+const MATCH_REG = /^([a-z]+)(\d+|#[a-z0-9]{3,6})$/i;
+
 export function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel("tailwind-emmet");
   outputChannel.appendLine("tailwind-emmet inited");
+  outputChannel.show();
   const classRegex = getRegex();
 
   let lastVersion = 0;
@@ -172,7 +185,7 @@ export function activate(context: vscode.ExtensionContext) {
     const line = editor.document.lineAt(selection.start.line).text;
     // 检查是否在 className= 后面
     const matchClass = line.match(classRegex);
-    if (matchClass && /\s|\t/.test(change.text)) {
+    if (matchClass && /(\s|\t){2}/.test(change.text)) {
       lastVersion = version;
 
       // 获取刚刚输入的字符的位置（最后一个被插入的字符）
@@ -184,11 +197,12 @@ export function activate(context: vscode.ExtensionContext) {
       if (wordRange) {
         const word = document.getText(wordRange);
 
-        const match = word.match(/^([a-z]+)(\d+)$/);
+        const match = word.match(MATCH_REG);
 
         if (match) {
           const [, type, value] = match;
           const tailwindClass = getTailwindClass(type, value);
+          outputChannel.appendLine('tailwind result '+ tailwindClass);
           if (tailwindClass) {
             // 替换整个词 + 刚刚输入的空格/Tab
             const fullRange = new vscode.Range(
