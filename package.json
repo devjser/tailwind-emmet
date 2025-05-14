@@ -2,9 +2,9 @@
   "name": "tailwind-emmet",
   "displayName": "tailwind-emmet",
   "description": "convert emmet to tailwind className",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "engines": {
-    "vscode": "^1.99.0"
+    "vscode": "^1.0.0"
   },
   "keywords": [
     "tailwind",
@@ -20,6 +20,10 @@
     "Other"
   ],
   "publisher": "devjser",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/devjser/tailwind-emmet"
+  },
   "main": "./dist/extension.js",
   "activationEvents": [
     "onStartupFinished",
@@ -67,7 +71,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
-    "@types/vscode": "^1.99.1",
+    "@types/vscode": "^1.0.0",
     "@typescript-eslint/eslint-plugin": "^8.28.0",
     "@typescript-eslint/parser": "^8.28.0",
     "@vscode/test-cli": "^0.0.10",
@@ -76,5 +80,8 @@
     "eslint": "^9.23.0",
     "npm-run-all": "^4.1.5",
     "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "pnpm": "^10.11.0"
   }
 }
