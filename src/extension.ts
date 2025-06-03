@@ -5,6 +5,9 @@ let outputChannel: vscode.OutputChannel;
 
 function getTailwindClass(type: string, value: string): string {
   switch (type) {
+    // size
+    case "size":
+      return `size-[${value}px]`;
     case "w":
       return `w-[${value}px]`;
     case "h":
@@ -18,6 +21,7 @@ function getTailwindClass(type: string, value: string): string {
     case "mih":
       return `min-h-[${value}px]`;
 
+    // position
     case "t":
       return `top-[${value}px]`;
     case "r":
@@ -26,7 +30,7 @@ function getTailwindClass(type: string, value: string): string {
       return `bottom-[${value}px]`;
     case "l":
       return `left-[${value}px]`;
-
+    // margin
     case "m":
       return `m-[${value}px]`;    
     case "mt": 
@@ -41,7 +45,7 @@ function getTailwindClass(type: string, value: string): string {
       return `mx-[${value}px]`;   
     case "my": 
       return `my-[${value}px]`;   
-
+    // padding
     case "p":
       return `p-[${value}px]`;  
     case "pt":
@@ -57,6 +61,7 @@ function getTailwindClass(type: string, value: string): string {
     case "py":
       return `py-[${value}px]`;
 
+    // font
     case "f":
       return `text-[${value}px]`;
     case "lh":
@@ -69,16 +74,17 @@ function getTailwindClass(type: string, value: string): string {
     case "indent":
       return `text-indent-[${value}px]`;
     
-
+    // gap
     case "g":
       return `gap-[${value}px]`;
     case "gx":
       return `gap-x-[${value}px]`;
     case "gy":
       return `gap-y-[${value}px]`; 
+
+    // border
     case "bdrs":
       return `rounded-[${value}px]`;
-
     case "bdc":
       return `border border-solid border-[${value}]`; 
     case "bd":
@@ -93,6 +99,7 @@ function getTailwindClass(type: string, value: string): string {
       return `border-solid border-b-[${value}px]`; 
     case "bdl":
       return `border-solid border-l-[${value}px]`;
+    // colors
     case "c":
       return `text-[#${value}]`;
     case "bgc":
@@ -127,7 +134,7 @@ async function insertCodeOnTab(editor: vscode.TextEditor, classRegex: RegExp) {
     const word = document.getText(wordRange);
 
     if (word) {
-      const match = word.match(/^([a-z]+)(\d+|#[a-z0-9]{3,6})$/i);
+      const match = word.match(/^([a-z]+)([-0-9]+|#[a-z0-9]{3,6})$/i);
       if (match) {
         const [, type, value] = match;
         const tailwindClass = getTailwindClass(type, value);
@@ -162,7 +169,7 @@ const MATCH_REG = /^([a-z]+)(\d+|#[a-z0-9]{3,6})$/i;
 export function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel("tailwind-emmet");
   outputChannel.appendLine("tailwind-emmet inited");
-  outputChannel.show();
+  // outputChannel.show();
   const classRegex = getRegex();
 
   let lastVersion = 0;
