@@ -3,6 +3,30 @@ import * as vscode from "vscode";
 
 let outputChannel: vscode.OutputChannel;
 
+const KEYWORD_MAP: Record<string, string> = {
+  fx: "flex",
+  fxc: "flex-col",
+  fxr: "flex-row",
+  jcc: "justify-center",
+  jcb: "justify-between",
+  jce: "justify-end",
+  jcs: "justify-start",
+  aic: "items-center",
+  ais: "items-start",
+  aie: "items-end",
+  db: "block",
+  dib: "inline-block",
+  dn: "hidden",
+  posa: "absolute",
+  posr: "relative",
+  posf: "fixed",
+  poss: "static",
+  ovh: "overflow-hidden",
+  ova: "overflow-auto",
+  ovx: "overflow-x-auto",
+  ovy: "overflow-y-auto",
+};
+
 function getTailwindClass(type: string, value: string): string {
   switch (type) {
     // size
@@ -85,6 +109,8 @@ function getTailwindClass(type: string, value: string): string {
     // border
     case "bdrs":
       return `rounded-[${value}px]`;
+    case "br":
+      return `rounded-[${value}px]`;
     case "bdc":
       return `border border-solid border-[${value}]`; 
     case "bd":
@@ -106,9 +132,24 @@ function getTailwindClass(type: string, value: string): string {
       return `bg-[#${value}]`;
     case "oc":
       return `outline-[#${value}]`;
+    case "op":
+      return `opacity-[${value}]`;
+    case "ls":
+      return `tracking-[${value}px]`;
+    case "tx":
+      return `translate-x-[${value}px]`;
+    case "ty":
+      return `translate-y-[${value}px]`;
+    case "rot":
+      return `rotate-[${value}deg]`;
+    case "sc":
+      return `scale-[${value}%]`;
     default:
       return "";
   }
+}
+function getTailwindKeyword(word: string): string {
+  return KEYWORD_MAP[word] || "";
 }
 function getRegex(): RegExp {
   const tailwindConfig = vscode.workspace.getConfiguration("tailwindCSS");
@@ -145,6 +186,14 @@ async function insertCodeOnTab(editor: vscode.TextEditor, classRegex: RegExp) {
           });
           return;
         }
+      } else {
+        const k = getTailwindKeyword(word);
+        if (k) {
+          await editor.edit((editBuilder: vscode.TextEditorEdit) => {
+            editBuilder.replace(wordRange as vscode.Range, k);
+          });
+          return;
+        }
       }
     }
   }
@@ -164,7 +213,7 @@ const insertCodeOnTabDebounced = debounce((editor: vscode.TextEditor, classRegex
 }, 500);
 
 
-const MATCH_REG = /^([a-z]+)(\d+|#[a-z0-9]{3,6})$/i;
+const MATCH_REG = /^([a-z]+)([-0-9]+|#[a-z0-9]{3,6})$/i;
 
 export function activate(context: vscode.ExtensionContext) {
   outputChannel = vscode.window.createOutputChannel("tailwind-emmet");
@@ -192,7 +241,7 @@ export function activate(context: vscode.ExtensionContext) {
     const line = editor.document.lineAt(selection.start.line).text;
     // 检查是否在 className= 后面
     const matchClass = line.match(classRegex);
-    if (matchClass && /(\s|\t){2}/.test(change.text)) {
+    if (matchClass && /\s/.test(change.text)) {
       lastVersion = version;
 
       // 获取刚刚输入的字符的位置（最后一个被插入的字符）
@@ -227,12 +276,95 @@ export function activate(context: vscode.ExtensionContext) {
               wordRange.start.character + tailwindClass.length + 1
             );
             editor.selection = new vscode.Selection(newPosition, newPosition);
+            return;
           }
+        }
+        const keyword = getTailwindKeyword(word);
+        if (keyword) {
+          const fullRange = new vscode.Range(
+            wordRange.start,
+            change.range.end
+          );
+          await editor.edit((editBuilder: vscode.TextEditorEdit) => {
+            editBuilder.replace(fullRange, keyword + ' ');
+          });
+          const newPosition = new vscode.Position(
+            selection.active.line,
+            wordRange.start.character + keyword.length + 1
+          );
+          editor.selection = new vscode.Selection(newPosition, newPosition);
+          return;
         }
       }
     }
 
   });
+  const languages = [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "nvue",
+    "svelte",
+    "html",
+    "xhtml",
+    "ejs",
+    "jsx",
+    "tsx",
+    "jsp",
+    "php",
+    "pug",
+    "hbs",
+    "ftl",
+    "tpl",
+  ];
+  const provider = vscode.languages.registerCompletionItemProvider(
+    languages,
+    {
+      provideCompletionItems(document, position) {
+        const lineText = document.lineAt(position).text;
+        if (!classRegex.test(lineText)) {
+          return;
+        }
+        const wordRange = document.getWordRangeAtPosition(position);
+        if (!wordRange) {
+          return;
+        }
+        const word = document.getText(wordRange);
+        const items: vscode.CompletionItem[] = [];
+        const valueMatch = word.match(MATCH_REG);
+        if (valueMatch) {
+          const [, type, value] = valueMatch;
+          const tw = getTailwindClass(type, value);
+          if (tw) {
+            const item = new vscode.CompletionItem(`${word} → ${tw}`, vscode.CompletionItemKind.Keyword);
+            item.insertText = tw;
+            item.range = wordRange;
+            item.sortText = "0";
+            item.filterText = word;
+            items.push(item);
+          }
+        } else {
+          const lower = word.toLowerCase();
+          Object.keys(KEYWORD_MAP).forEach((k) => {
+            if (k.startsWith(lower)) {
+              const tw = KEYWORD_MAP[k];
+              const item = new vscode.CompletionItem(`${k} → ${tw}`, vscode.CompletionItemKind.Keyword);
+              item.insertText = tw;
+              item.range = wordRange;
+              item.sortText = k === lower ? "0" : "1";
+              item.filterText = word;
+              items.push(item);
+            }
+          });
+        }
+        return items;
+      },
+    },
+    ...["#", "0","1","2","3","4","5","6","7","8","9"]
+  );
+  context.subscriptions.push(provider);
 }
 
 export function deactivate() { }

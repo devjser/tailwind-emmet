@@ -67,6 +67,7 @@ Alternatively, you can install directly from the marketplace:
 | fw    | font-weight  | `font-[500]`           |
 | ti    | text-indent  | `text-indent-[20px]`   |
 | z     | z-index      | `z-[100]`              |
+| ls    | letter-spacing | `tracking-[2px]`     |
 
 ### Layout
 | Short | CSS Property | Tailwind Class Example |
@@ -75,6 +76,7 @@ Alternatively, you can install directly from the marketplace:
 | gx    | column-gap    | `gap-x-[8px]`          |
 | gy    | row-gap       | `gap-y-[8px]`          |
 | bdrs  | border-radius | `rounded-[4px]`        |
+| br    | border-radius | `rounded-[4px]`        |
 
 ### Borders
 | Short | CSS Property       | Tailwind Class Example       |
@@ -92,14 +94,53 @@ Alternatively, you can install directly from the marketplace:
 | c     | color              | `text-[#ff0000]`       |
 | bgc   | background-color   | `bg-[#00ff00]`         |
 | oc    | outline-color      | `outline-[#0000ff]`    |
+| op    | opacity            | `opacity-[60]`         |
+
+### Transform
+| Short | CSS Property            | Tailwind Class Example |
+|-------|-------------------------|------------------------|
+| tx    | translate-x             | `translate-x-[8px]`    |
+| ty    | translate-y             | `translate-y-[8px]`    |
+| rot   | rotate                  | `rotate-[45deg]`       |
+| sc    | scale (percentage)      | `scale-[150%]`         |
+
+### Keyword Utilities (no numeric value)
+These abbreviations expand directly to common Tailwind utilities:
+
+| Abbrev | Expands To        |
+|--------|-------------------|
+| fx     | `flex`            |
+| fxc    | `flex-col`        |
+| fxr    | `flex-row`        |
+| jcc    | `justify-center`  |
+| jcb    | `justify-between` |
+| jce    | `justify-end`     |
+| jcs    | `justify-start`   |
+| aic    | `items-center`    |
+| ais    | `items-start`     |
+| aie    | `items-end`       |
+| db     | `block`           |
+| dib    | `inline-block`    |
+| dn     | `hidden`          |
+| posa   | `absolute`        |
+| posr   | `relative`        |
+| posf   | `fixed`           |
+| poss   | `static`          |
+| ovh    | `overflow-hidden` |
+| ova    | `overflow-auto`   |
+| ovx    | `overflow-x-auto` |
+| ovy    | `overflow-y-auto` |
 
 ## Usage Notes
 1. Color values should omit the `#` prefix (use `ff0000` not `#ff0000`)
 2. Numeric values automatically get `px` units
 3. Returns empty string for unsupported types
+4. Suggestions are provided in class attributes. Type abbreviations like `w200`, `bgc#333`, or keywords like `fx`, then press Tab/Enter to accept.
 
 ## Example Usage
 ```
 // w200 =>  w-[200px]
 // bgc#333  bg-[#333]
+// fx  => flex
+// jcc => justify-center
 ```
